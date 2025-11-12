@@ -9,3 +9,9 @@
    - This individual interest rate is updated each time the user deposits into the vault.
    - The global interest rate can only be decreased to incentivize and reward early deposits. However, this also means depositing again at a later time could lower the individual interest rate of the user.
    - Early users would be best served by making subsequent deposits from different addresses to avoid updating to a lower interest rate.
+
+
+## Known Issues
+
+1. totalSupply function from ERC20 will not include any accrued interest as looping through all users could result in denial of service as the array continues to grow with additional users.
+2. Owner could grant themselves permission to mint and burn which could invalidate access control.
