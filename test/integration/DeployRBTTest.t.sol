@@ -5,21 +5,25 @@ pragma solidity ^0.8.24;
 import {DeployRBT} from "../../script/DeployRBT.s.sol";
 import {CodeConstants, HelperConfig} from "../../script/HelperConfig.s.sol";
 import {RebaseToken} from "../../src/RebaseToken.sol";
+import {Vault} from "../../src/Vault.sol";
 import {Test, console} from "forge-std/Test.sol";
 
 contract DeployRBTTest is Test, CodeConstants {
     DeployRBT public deployer;
     HelperConfig public helperConfig;
     RebaseToken public rbt;
+    Vault public vault;
+
+    bytes32 private constant MINT_AND_BURN_ROLE = keccak256("MINT_AND_BURN_ROLE");
 
     function setUp() external {
         deployer = new DeployRBT();
-        (rbt) = deployer.run();
+        (rbt, vault) = deployer.run();
         // (ethUsdPriceFeed, btcUsdPriceFeed, weth, wbtc, account) = helperConfig.activeNetworkConfig();
     }
 
     /*//////////////////////////////////////////////////////////////
-                           INITIAL DSC STATE
+                           INITIAL RBT STATE
     //////////////////////////////////////////////////////////////*/
 
     function testRbtNameWasSetCorrectly() external view {
@@ -32,5 +36,17 @@ contract DeployRBTTest is Test, CodeConstants {
 
     function testRbtInitialInterestRateWasSetCorrectly() external view {
         assertEq(rbt.getGlobalInterestRate(), INITIAL_INTEREST_RATE);
+    }
+
+    function testRbtGrantedMintAndBurnRoleToVaultContract() external view {
+        assertEq(rbt.hasRole(MINT_AND_BURN_ROLE, address(vault)), true);
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                          INITIAL VAULT STATE
+    //////////////////////////////////////////////////////////////*/
+
+    function testVaultRbtAddressWasSetCorrectly() external view {
+        assertEq(vault.getRebaseTokenAddress(), address(rbt));
     }
 }
