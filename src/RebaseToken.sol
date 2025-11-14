@@ -81,9 +81,6 @@ contract RebaseToken is ERC20, Ownable, AccessControl, IRebaseToken {
      * @dev Only callable from address with mint and burn permissions
      */
     function burn(address _from, uint256 _amount) external onlyRole(MINT_AND_BURN_ROLE) {
-        if (_amount == type(uint256).max) {
-            _amount = balanceOf(_from);
-        }
         _mintAccruedInterest(_from);
         _burn(_from, _amount);
     }
@@ -218,7 +215,7 @@ contract RebaseToken is ERC20, Ownable, AccessControl, IRebaseToken {
      * @return Principal balance plus un-minted interest
      * @dev Override ERC20 balanceOf to reflect interest earned through rebase mechanic
      */
-    function balanceOf(address _user) public view override returns (uint256) {
+    function balanceOf(address _user) public view override(IRebaseToken, ERC20) returns (uint256) {
         return (super.balanceOf(_user) * _calculateUserAccumulatedInterestSinceLastUpdate(_user)) / PRECISION;
     }
 

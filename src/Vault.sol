@@ -55,6 +55,9 @@ contract Vault {
      * @param _amount Amount of rebase tokens to burn
      */
     function redeem(uint256 _amount) external {
+        if (_amount == type(uint256).max) {
+            _amount = i_rbt.balanceOf(msg.sender);
+        }
         i_rbt.burn(msg.sender, _amount);
         (bool success,) = payable(msg.sender).call{value: _amount}("");
         if (!success) {
