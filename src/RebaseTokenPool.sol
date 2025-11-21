@@ -4,7 +4,6 @@ pragma solidity ^0.8.24;
 
 import {IRebaseToken} from "./interfaces/IRebaseToken.sol";
 import {IPoolV1, Pool, TokenPool} from "@chainlink/contracts-ccip/contracts/pools/TokenPool.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC20} from "@openzeppelin/contracts@4.8.3/token/ERC20/IERC20.sol";
 
 /**

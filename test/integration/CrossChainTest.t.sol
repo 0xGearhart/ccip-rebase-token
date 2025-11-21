@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 
 // scripts and deployment
 import {DeployRBT} from "../../script/DeployRBT.s.sol";
-import {CodeConstants, HelperConfig} from "../../script/HelperConfig.s.sol";
+import {CodeConstants} from "../../script/HelperConfig.s.sol";
 
 // contracts to test
 import {RebaseToken} from "../../src/RebaseToken.sol";
@@ -19,7 +19,7 @@ import {
     RegistryModuleOwnerCustom
 } from "@chainlink/contracts-ccip/contracts/tokenAdminRegistry/RegistryModuleOwnerCustom.sol";
 import {TokenAdminRegistry} from "@chainlink/contracts-ccip/contracts/tokenAdminRegistry/TokenAdminRegistry.sol";
-import {BurnMintERC677Helper} from "@chainlink/local/src/ccip/BurnMintERC677Helper.sol";
+// import {BurnMintERC677Helper} from "@chainlink/local/src/ccip/BurnMintERC677Helper.sol";
 import {CCIPLocalSimulatorFork, Register} from "@chainlink/local/src/ccip/CCIPLocalSimulatorFork.sol";
 import {IERC20} from "@openzeppelin/contracts@4.8.3/token/ERC20/IERC20.sol";
 import {Test, console} from "forge-std/Test.sol";
@@ -30,6 +30,7 @@ contract CrossChainTest is Test, CodeConstants {
     RebaseToken arbSepoliaRbt;
     RebaseTokenPool ethSepoliaRbtPool;
     RebaseTokenPool arbSepoliaRbtPool;
+    DeployRBT deployer;
     Vault vault;
 
     Register.NetworkDetails sourceNetworkDetails;
@@ -40,7 +41,8 @@ contract CrossChainTest is Test, CodeConstants {
 
     // blank address array for allowlist to indicate anyone can use the bridge
     address[] allowList;
-    address owner = makeAddr("owner");
+    // address owner = makeAddr("owner");
+    address owner = vm.envAddress("DEFAULT_KEY_ADDRESS");
     address user1 = makeAddr("user1");
     uint256 constant SEND_AMOUNT = 1e5;
 
@@ -53,6 +55,9 @@ contract CrossChainTest is Test, CodeConstants {
         // ARB Sepolia Fork (destination)
         destinationFork = vm.createFork(ARB_SEPOLIA_RPC_URL);
 
+        // deploy RBT, RBT Pool and Vault contracts on source chain
+        deployer = new DeployRBT();
+        (ethSepoliaRbt, vault) = deployer.run();
         // deploy CCIP local simulation contracts and make their addresses the same (persistent) across chains
         ccipLocalSimulatorFork = new CCIPLocalSimulatorFork();
         vm.makePersistent(address(ccipLocalSimulatorFork));
@@ -60,9 +65,8 @@ contract CrossChainTest is Test, CodeConstants {
         vm.startPrank(owner);
         // chainlink CCIP network details for source chain
         sourceNetworkDetails = ccipLocalSimulatorFork.getNetworkDetails(block.chainid);
-        // deploy RBT, RBT Pool and Vault contracts on source chain
-        ethSepoliaRbt = new RebaseToken(RBT_NAME, RBT_SYMBOL, INITIAL_INTEREST_RATE);
-        vault = new Vault(ethSepoliaRbt);
+        // ethSepoliaRbt = new RebaseToken(RBT_NAME, RBT_SYMBOL, INITIAL_INTEREST_RATE);
+        // vault = new Vault(ethSepoliaRbt);
         ethSepoliaRbtPool = new RebaseTokenPool(
             IERC20(address(ethSepoliaRbt)),
             DECIMAL_PRECISION,

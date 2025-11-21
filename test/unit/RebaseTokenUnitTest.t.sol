@@ -3,7 +3,7 @@
 pragma solidity ^0.8.24;
 
 import {CodeConstants} from "../../script/HelperConfig.s.sol";
-import {AccessControl, Ownable, RebaseToken} from "../../src/RebaseToken.sol";
+import {Ownable, RebaseToken} from "../../src/RebaseToken.sol";
 import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
 import {Test, console} from "forge-std/Test.sol";
 
