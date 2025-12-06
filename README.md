@@ -1,4 +1,85 @@
-# Cross-chain Rebase Token
+# Foundry CCIP Rebase Token
+
+
+# About
+
+
+- [Foundry CCIP Rebase Token](#foundry-ccip-rebase-token)
+- [About](#about)
+- [Getting Started](#getting-started)
+  - [Requirements](#requirements)
+  - [Quickstart](#quickstart)
+- [Usage](#usage)
+  - [Start a local node](#start-a-local-node)
+  - [Deploy - Locally](#deploy---locally)
+  - [Testing](#testing)
+    - [Testing Coverage](#testing-coverage)
+- [Deployment to a testnet or mainnet](#deployment-to-a-testnet-or-mainnet)
+  - [Scripts](#scripts)
+  - [Estimate gas](#estimate-gas)
+- [Project design and assumptions](#project-design-and-assumptions)
+  - [Notes](#notes)
+
+# Getting Started
+
+## Requirements
+
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+- [foundry](https://getfoundry.sh/)
+
+## Quickstart
+
+```
+git clone https://github.com/0xGearhart/foundry-ccip-rebase-token
+cd foundry-ccip-rebase-token
+forge build
+```
+
+# Usage
+
+## Start a local node
+
+```
+make anvil
+```
+
+## Deploy - Locally
+
+This will default to your local node. You need to have it running in another terminal in order for it to deploy.
+
+```
+make deploy
+```
+
+
+## Testing
+
+```
+forge test
+```
+
+### Testing Coverage
+
+```
+forge coverage
+```
+
+# Deployment to a testnet or mainnet
+
+
+## Scripts
+
+
+## Estimate gas
+
+
+# Project design and assumptions
+
+
+## Notes
+
+Foundry CCIP Rebase Token
 
 1. A protocol that allows a user to deposit into a vault and in return, receive rebase tokens that represent their underlying balance
 2. Rebase token -> balanceOf function is dynamic. This is needed to show the changing balance over time.
@@ -11,7 +92,7 @@
    - Early users would be best served by making subsequent deposits from different addresses to avoid updating to a lower interest rate.
 
 
-## Known Issues
+Known Issues
 
 1. totalSupply function from ERC20 will not include any accrued interest as looping through all users could result in denial of service as the array continues to grow with additional users.
 2. Owner could grant anyone (including themselves) permission to mint and burn which would invalidate access control.
