@@ -119,10 +119,12 @@ forge build
 
 2. **Configure your `.env` file:**
    ```bash
-   SEPOLIA_RPC_URL=your_sepolia_rpc_url_here
-   MAINNET_RPC_URL=your_mainnet_rpc_url_here
-   PRIVATE_KEY=your_private_key_here
+   ETH_MAINNET_RPC_URL=https://eth-mainnet.g.alchemy.com/v2/your-api-key
+   ETH_SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/your-api-key
+   ARB_MAINNET_RPC_URL=https://arb-mainnet.g.alchemy.com/v2/your-api-key
+   ARB_SEPOLIA_RPC_URL=https://arb-mainnet.g.alchemy.com/v2/your-api-key
    ETHERSCAN_API_KEY=your_etherscan_api_key_here
+   DEFAULT_KEY_ADDRESS=public_address_of_your_encrypted_private_key_here
    ```
 
 3. **Get testnet ETH:**
