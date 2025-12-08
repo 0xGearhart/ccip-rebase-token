@@ -128,7 +128,7 @@ forge build
    ```
 
 3. **Get testnet ETH:**
-   - Sepolia Faucet: [SEPOLIA](https://cloud.google.com/application/web3/faucet/ethereum/sepolia)
+   - Sepolia Faucet: [cloud.google.com/application/web3/faucet/ethereum/sepolia](https://cloud.google.com/application/web3/faucet/ethereum/sepolia)
 
 **⚠️ Security Warning:**
 - Never commit your `.env` file
@@ -193,7 +193,7 @@ make deploy
 
 ```bash
 # Example command
-cast send <CONTRACT_ADDRESS> "functionName()" --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY
+cast send <CONTRACT_ADDRESS> "functionName()" --rpc-url $SEPOLIA_RPC_URL --account defaultKey
 ```
 
 ## Deployment
@@ -209,7 +209,7 @@ make deploy ARGS="--network sepolia"
 Or using forge directly:
 
 ```bash
-forge script script/DeployContract.s.sol:DeployContract --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $ETHERSCAN_API_KEY -vvvv
+forge script script/DeployContract.s.sol:DeployContract --rpc-url $SEPOLIA_RPC_URL --account defaultKey --broadcast --verify --etherscan-api-key $ETHERSCAN_API_KEY -vvvv
 ```
 
 ### Verify Contract
