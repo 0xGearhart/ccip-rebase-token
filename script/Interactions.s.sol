@@ -25,11 +25,13 @@ contract ConfigurePool is Script, CodeConstants {
     )
         public
     {
-        // build array of remote pool addresses
+        // build array of remote pool addresses in byte format
         bytes[] memory remotePoolAddresses = new bytes[](1);
+        // encode remote pool address for bytes array
         remotePoolAddresses[0] = abi.encode(_remotePool);
-        // build array of chains to add
+        // initialize array of ChainUpdateStructs
         TokenPool.ChainUpdate[] memory chainsToAdd = new TokenPool.ChainUpdate[](1);
+        // build Chain Update struct
         chainsToAdd[0] = TokenPool.ChainUpdate({
             remoteChainSelector: _remoteChainSelector,
             remotePoolAddresses: remotePoolAddresses,
@@ -50,17 +52,9 @@ contract ConfigurePool is Script, CodeConstants {
         // build array of chains to remove
         uint64[] memory chainsToRemove;
 
-        vm.startBroadcast(_getAccount());
+        vm.startBroadcast(vm.envAddress("DEFAULT_KEY_ADDRESS"));
         TokenPool(_localPool).applyChainUpdates(chainsToRemove, chainsToAdd);
         vm.stopBroadcast();
-    }
-
-    function _getAccount() internal view returns (address) {
-        if (block.chainid == LOCAL_CHAIN_ID) {
-            return DEFAULT_SENDER;
-        } else {
-            return vm.envAddress("DEFAULT_KEY_ADDRESS");
-        }
     }
 }
 
@@ -93,8 +87,11 @@ contract bridgeTokens is Script {
         uint256 ccipFee = IRouterClient(_routerAddress).getFee(_destinationChainSelector, message);
 
         vm.startBroadcast();
+        // approve link token to pay fee
         IERC20(_linkTokenAddress).approve(_routerAddress, ccipFee);
+        // approve tokens to be bridged
         IERC20(_tokenToBridge).approve(_routerAddress, _amountToBridge);
+        // bridge tokens
         IRouterClient(_routerAddress).ccipSend(_destinationChainSelector, message);
         vm.stopBroadcast();
     }

@@ -2,8 +2,9 @@
 
 pragma solidity ^0.8.24;
 
-// deployment
+// scripts and deployment
 import {CodeConstants, DeployRBT} from "../../script/DeployRBT.s.sol";
+import {ConfigurePool} from "../../script/Interactions.s.sol";
 
 // contracts to test
 import {RebaseToken} from "../../src/RebaseToken.sol";
@@ -37,9 +38,6 @@ contract CrossChainTest is Test, CodeConstants {
     uint256 sourceFork;
     uint256 destinationFork;
 
-    // blank address array for allowlist to indicate anyone can use the bridge
-    address[] allowList;
-    // address owner = makeAddr("owner");
     address owner = vm.envAddress("DEFAULT_KEY_ADDRESS");
     address user1 = makeAddr("user1");
     uint256 constant SEND_AMOUNT = 1e5;
@@ -70,52 +68,37 @@ contract CrossChainTest is Test, CodeConstants {
         // get chainlink CCIP network details for destination chain
         destinationNetworkDetails = ccipLocalSimulatorFork.getNetworkDetails(block.chainid);
 
-        // configure both pools
-        configureTokenPool(
-            sourceFork,
-            address(ethSepoliaRbtPool),
-            destinationNetworkDetails.chainSelector,
-            address(arbSepoliaRbtPool),
-            address(arbSepoliaRbt)
-        );
-        configureTokenPool(
-            destinationFork,
+        // configure arb sepolia pool
+        ConfigurePool configureDestinationPool = new ConfigurePool();
+        configureDestinationPool.run(
             address(arbSepoliaRbtPool),
             sourceNetworkDetails.chainSelector,
             address(ethSepoliaRbtPool),
-            address(ethSepoliaRbt)
+            address(ethSepoliaRbt),
+            false,
+            0,
+            0,
+            false,
+            0,
+            0
         );
-    }
 
-    function configureTokenPool(
-        uint256 _fork,
-        address _localPool,
-        uint64 _remoteChainSelector,
-        address _remotePool,
-        address _remoteTokenAddress
-    )
-        public
-    {
-        vm.selectFork(_fork);
-        // build array of remote pool addresses in byte format
-        bytes[] memory remotePoolAddresses = new bytes[](1);
-        // encode remote pool address for bytes array
-        remotePoolAddresses[0] = abi.encode(_remotePool);
-        // initialize array of ChainUpdateStructs
-        TokenPool.ChainUpdate[] memory chainsToAdd = new TokenPool.ChainUpdate[](1);
-        // build Chain Update struct
-        chainsToAdd[0] = TokenPool.ChainUpdate({
-            remoteChainSelector: _remoteChainSelector,
-            remotePoolAddresses: remotePoolAddresses,
-            remoteTokenAddress: abi.encode(_remoteTokenAddress),
-            outboundRateLimiterConfig: RateLimiter.Config({isEnabled: false, capacity: 0, rate: 0}),
-            inboundRateLimiterConfig: RateLimiter.Config({isEnabled: false, capacity: 0, rate: 0})
-        });
-        // build array of chains to remove
-        uint64[] memory chainsToRemove;
-        // add and remove necessary chains for TokenPool
-        vm.prank(owner);
-        TokenPool(_localPool).applyChainUpdates(chainsToRemove, chainsToAdd);
+        // switch back to eth sepolia chain
+        vm.selectFork(sourceFork);
+        // configure eth sepolia pool
+        ConfigurePool configureSourcePool = new ConfigurePool();
+        configureSourcePool.run(
+            address(ethSepoliaRbtPool),
+            destinationNetworkDetails.chainSelector,
+            address(arbSepoliaRbtPool),
+            address(arbSepoliaRbt),
+            false,
+            0,
+            0,
+            false,
+            0,
+            0
+        );
     }
 
     function bridgeTokens(

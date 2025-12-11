@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: all test clean deployRBT fund help install coverageReport snapshot gasReport format anvil
+.PHONY: all test clean deploy deploy2 fund help install snapshot coverageReport format anvil
 
 DEFAULT_ANVIL_KEY := 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
@@ -40,5 +40,11 @@ ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
 	NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --account defaultKey --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 endif
 
-deployRBT:
+deploy:
 	@forge script script/DeployRBT.s.sol:DeployRBT $(NETWORK_ARGS)
+
+# during anvil deployment grantMintAndBurnRole for vault contract is failing, not sure why but acts like it is being called from someone who is not the owner even though it is within the same broadcast. Need to investigate further
+# deploy2:
+# 	@read -p "Deploy? (y/n): " RESPONSE; \
+# 	DEPLOY_FLAG=$$([ "$$RESPONSE" = "y" ] && echo "true" || echo "false"); \
+# 	forge script script/DeployRBT.s.sol:DeployRBT --sig "run(bool)" $$DEPLOY_FLAG $(NETWORK_ARGS)
