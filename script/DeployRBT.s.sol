@@ -23,10 +23,6 @@ abstract contract CodeConstants {
     uint256 public constant INITIAL_INTEREST_RATE = 5e10;
     // RBT Token Pool Info
     uint8 public constant DECIMAL_PRECISION = 18;
-    // mainnet chain id and info
-    uint256 public constant ETH_MAINNET_CHAIN_ID = 1;
-    // sepolia chain id and info
-    uint256 public constant ETH_SEPOLIA_CHAIN_ID = 11_155_111;
     // local chain id and info
     uint256 public constant LOCAL_CHAIN_ID = 31_337;
 }
