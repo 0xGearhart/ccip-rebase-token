@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 import {CodeConstants, DeployRBT} from "../../script/DeployRBT.s.sol";
 import {RebaseToken} from "../../src/RebaseToken.sol";
 import {Vault} from "../../src/Vault.sol";
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract DeployRBTTest is Test, CodeConstants {
     DeployRBT public deployer;

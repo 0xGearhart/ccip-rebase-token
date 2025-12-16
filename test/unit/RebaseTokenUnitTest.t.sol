@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 import {CodeConstants} from "../../script/DeployRBT.s.sol";
 import {Ownable, RebaseToken} from "../../src/RebaseToken.sol";
 import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract RebaseTokenTest is Test, CodeConstants {
     address user1 = makeAddr("user1");
@@ -205,7 +205,8 @@ contract RebaseTokenTest is Test, CodeConstants {
         assertEq(user3StartingUserTimeStamp, 0);
         uint256 expectedTimestamp = block.timestamp;
         vm.prank(user1);
-        rbt.transfer(user3, TRANSFER_AMOUNT);
+        (bool success) = rbt.transfer(user3, TRANSFER_AMOUNT);
+        success;
         assertEq(rbt.balanceOf(user3), user3StartingTotalBalance + TRANSFER_AMOUNT);
         assertEq(rbt.getUserInterestRate(user1), rbt.getUserInterestRate(user3));
         assertEq(rbt.getUserUpdatedAt(user3), expectedTimestamp);
@@ -217,7 +218,8 @@ contract RebaseTokenTest is Test, CodeConstants {
         (uint256 user2StartingUserInterestRate,,, uint256 user2StartingTotalBalance) = _getAllInfoForUser(user2);
         uint256 expectedTimestamp = block.timestamp;
         vm.prank(user1);
-        rbt.transfer(user2, TRANSFER_AMOUNT);
+        (bool success) = rbt.transfer(user2, TRANSFER_AMOUNT);
+        success;
         assertEq(rbt.balanceOf(user1), startingTotalBalance - TRANSFER_AMOUNT);
         assertEq(rbt.balanceOf(user2), user2StartingTotalBalance + TRANSFER_AMOUNT);
         assertEq(rbt.balanceOf(user1), rbt.principalBalanceOf(user1));
@@ -242,7 +244,8 @@ contract RebaseTokenTest is Test, CodeConstants {
         vm.expectEmit(true, true, false, false, address(rbt));
         emit Transfer(user1, user2, startingTotalBalance);
         vm.prank(user1);
-        rbt.transfer(user2, type(uint256).max);
+        (bool success) = rbt.transfer(user2, type(uint256).max);
+        success;
         assertEq(rbt.balanceOf(user1), 0);
         assertEq(rbt.balanceOf(user2), user2StartingTotalBalance + startingTotalBalance);
         assertEq(rbt.getUserInterestRate(user1), startingUserInterestRate);
@@ -266,7 +269,8 @@ contract RebaseTokenTest is Test, CodeConstants {
         assertEq(user3StartingUserTimeStamp, 0);
         uint256 expectedTimestamp = block.timestamp;
         vm.prank(user1);
-        rbt.transferFrom(user1, user3, TRANSFER_AMOUNT);
+        (bool success) = rbt.transferFrom(user1, user3, TRANSFER_AMOUNT);
+        success;
         assertEq(rbt.balanceOf(user3), user3StartingTotalBalance + TRANSFER_AMOUNT);
         assertEq(rbt.getUserInterestRate(user1), rbt.getUserInterestRate(user3));
         assertEq(rbt.getUserUpdatedAt(user3), expectedTimestamp);
@@ -280,7 +284,8 @@ contract RebaseTokenTest is Test, CodeConstants {
         (uint256 user2StartingUserInterestRate,,, uint256 user2StartingTotalBalance) = _getAllInfoForUser(user2);
         uint256 expectedTimestamp = block.timestamp;
         vm.prank(user1);
-        rbt.transferFrom(user1, user2, TRANSFER_AMOUNT);
+        (bool success) = rbt.transferFrom(user1, user2, TRANSFER_AMOUNT);
+        success;
         assertEq(rbt.balanceOf(user1), startingTotalBalance - TRANSFER_AMOUNT);
         assertEq(rbt.balanceOf(user2), user2StartingTotalBalance + TRANSFER_AMOUNT);
         assertEq(rbt.balanceOf(user1), rbt.principalBalanceOf(user1));
@@ -307,7 +312,8 @@ contract RebaseTokenTest is Test, CodeConstants {
         vm.expectEmit(true, true, false, false, address(rbt));
         emit Transfer(user1, user2, startingTotalBalance);
         vm.prank(user1);
-        rbt.transferFrom(user1, user2, type(uint256).max);
+        (bool success) = rbt.transferFrom(user1, user2, type(uint256).max);
+        success;
         assertEq(rbt.balanceOf(user1), 0);
         assertEq(rbt.balanceOf(user2), user2StartingTotalBalance + startingTotalBalance);
         assertEq(rbt.getUserInterestRate(user1), startingUserInterestRate);

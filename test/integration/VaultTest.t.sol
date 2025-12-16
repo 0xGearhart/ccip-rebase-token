@@ -6,7 +6,7 @@ import {CodeConstants, DeployRBT} from "../../script/DeployRBT.s.sol";
 import {RebaseToken} from "../../src/RebaseToken.sol";
 import {Vault} from "../../src/Vault.sol";
 import {InvalidReceiverMock} from "../mocks/InvalidReceiverMock.sol";
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract VaultTest is Test, CodeConstants {
     DeployRBT public deployer;

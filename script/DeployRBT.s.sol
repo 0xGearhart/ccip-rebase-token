@@ -48,11 +48,11 @@ contract DeployRBT is Script, CodeConstants {
 
         // only needed for fork tests and deployments, ignore for local anvil chain
         if (block.chainid != LOCAL_CHAIN_ID) {
-            (rbtPool, ccipLocalSimulatorFork) = _deployPoolAndConfigureCCIP(rbt);
+            (rbtPool, ccipLocalSimulatorFork) = _deployPoolAndConfigureCcip(rbt);
         }
     }
 
-    function _deployPoolAndConfigureCCIP(RebaseToken rbt)
+    function _deployPoolAndConfigureCcip(RebaseToken rbt)
         internal
         returns (RebaseTokenPool rbtPool, CCIPLocalSimulatorFork ccipLocalSimulatorFork)
     {

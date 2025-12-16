@@ -8,20 +8,15 @@ import {ConfigurePool} from "../../script/Interactions.s.sol";
 
 // contracts to test
 import {RebaseToken} from "../../src/RebaseToken.sol";
-import {RebaseTokenPool, TokenPool} from "../../src/RebaseTokenPool.sol";
+import {RebaseTokenPool} from "../../src/RebaseTokenPool.sol";
 import {Vault} from "../../src/Vault.sol";
 
 // CCIP local testing infrastructure
 import {IRouterClient} from "@chainlink/contracts-ccip/contracts/interfaces/IRouterClient.sol";
 import {Client} from "@chainlink/contracts-ccip/contracts/libraries/Client.sol";
-import {RateLimiter} from "@chainlink/contracts-ccip/contracts/libraries/RateLimiter.sol";
-import {
-    RegistryModuleOwnerCustom
-} from "@chainlink/contracts-ccip/contracts/tokenAdminRegistry/RegistryModuleOwnerCustom.sol";
-import {TokenAdminRegistry} from "@chainlink/contracts-ccip/contracts/tokenAdminRegistry/TokenAdminRegistry.sol";
 import {CCIPLocalSimulatorFork, Register} from "@chainlink/local/src/ccip/CCIPLocalSimulatorFork.sol";
 import {IERC20} from "@openzeppelin/contracts@4.8.3/token/ERC20/IERC20.sol";
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract CrossChainTest is Test, CodeConstants {
     CCIPLocalSimulatorFork ccipLocalSimulatorFork;
@@ -44,12 +39,12 @@ contract CrossChainTest is Test, CodeConstants {
 
     function setUp() public {
         // create desired chain forks
-        string memory ETH_SEPOLIA_RPC_URL = vm.envString("ETH_SEPOLIA_RPC_URL");
-        string memory ARB_SEPOLIA_RPC_URL = vm.envString("ARB_SEPOLIA_RPC_URL");
+        string memory ethSepoliaRpcUrl = vm.envString("ETH_SEPOLIA_RPC_URL");
+        string memory arbSepoliaRpcUrl = vm.envString("ARB_SEPOLIA_RPC_URL");
         // ETH Sepolia Fork (source)
-        sourceFork = vm.createSelectFork(ETH_SEPOLIA_RPC_URL);
+        sourceFork = vm.createSelectFork(ethSepoliaRpcUrl);
         // ARB Sepolia Fork (destination)
-        destinationFork = vm.createFork(ARB_SEPOLIA_RPC_URL);
+        destinationFork = vm.createFork(arbSepoliaRpcUrl);
 
         // deploy RBT, RBT Pool and Vault contracts on source chain
         deployer = new DeployRBT();

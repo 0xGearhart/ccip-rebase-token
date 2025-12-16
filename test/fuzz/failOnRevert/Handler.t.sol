@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 import {RebaseToken} from "../../../src/RebaseToken.sol";
 import {Vault} from "../../../src/Vault.sol";
 import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract Handler is Test {
     using EnumerableSet for EnumerableSet.AddressSet;
@@ -80,7 +80,8 @@ contract Handler is Test {
             return;
         }
         vm.prank(sender);
-        rbt.transfer(receiver, _amount);
+        (bool success) = rbt.transfer(receiver, _amount);
+        success;
 
         _checkIfAddressShouldBeAdded(receiver);
         _checkIfAddressShouldBeRemoved(sender);
@@ -100,7 +101,8 @@ contract Handler is Test {
         }
         vm.startPrank(sender);
         rbt.approve(sender, _amount);
-        rbt.transferFrom(sender, receiver, _amount);
+        (bool success) = rbt.transferFrom(sender, receiver, _amount);
+        success;
         vm.stopPrank();
 
         _checkIfAddressShouldBeAdded(receiver);

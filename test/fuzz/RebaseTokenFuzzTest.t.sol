@@ -6,7 +6,7 @@ import {CodeConstants} from "../../script/DeployRBT.s.sol";
 import {Ownable, RebaseToken} from "../../src/RebaseToken.sol";
 import {Vault} from "../../src/Vault.sol";
 import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract RebaseTokenFuzzTest is Test, CodeConstants {
     RebaseToken public rbt;
@@ -122,7 +122,8 @@ contract RebaseTokenFuzzTest is Test, CodeConstants {
         rbt.setInterestRate(LOWER_INTEREST_RATE);
 
         vm.prank(user1);
-        rbt.transfer(user2, _amountToSend);
+        (bool success) = rbt.transfer(user2, _amountToSend);
+        success;
         uint256 endingUser1Balance = rbt.balanceOf(user1);
         uint256 endingUser2Balance = rbt.balanceOf(user2);
         assert(rbt.getUserInterestRate(user1) != LOWER_INTEREST_RATE);
@@ -151,7 +152,8 @@ contract RebaseTokenFuzzTest is Test, CodeConstants {
 
         vm.startPrank(user1);
         rbt.approve(user1, _amountToSend);
-        rbt.transferFrom(user1, user2, _amountToSend);
+        (bool success) = rbt.transferFrom(user1, user2, _amountToSend);
+        success;
         vm.stopPrank();
         uint256 endingUser1Balance = rbt.balanceOf(user1);
         uint256 endingUser2Balance = rbt.balanceOf(user2);
