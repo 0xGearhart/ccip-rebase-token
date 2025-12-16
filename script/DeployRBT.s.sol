@@ -5,6 +5,7 @@ pragma solidity ^0.8.24;
 import {RebaseToken} from "../src/RebaseToken.sol";
 import {RebaseTokenPool} from "../src/RebaseTokenPool.sol";
 import {Vault} from "../src/Vault.sol";
+import {Script} from "forge-std/Script.sol";
 
 import {
     RegistryModuleOwnerCustom
@@ -12,8 +13,6 @@ import {
 import {TokenAdminRegistry} from "@chainlink/contracts-ccip/contracts/tokenAdminRegistry/TokenAdminRegistry.sol";
 import {CCIPLocalSimulatorFork, Register} from "@chainlink/local/src/ccip/CCIPLocalSimulatorFork.sol";
 import {IERC20} from "@openzeppelin/contracts@4.8.3/token/ERC20/IERC20.sol";
-
-import {Script} from "forge-std/Script.sol";
 
 abstract contract CodeConstants {
     // RBT name
@@ -60,6 +59,66 @@ contract DeployRBT is Script, CodeConstants {
         // grant MINT_AND_BURN role to vault contract
         deployedRbt.grantMintAndBurnRole(address(vault));
         vm.stopBroadcast();
+    }
+
+    function _deployPoolAndConfigureCCIP(RebaseToken rbt)
+        internal
+        returns (RebaseTokenPool rbtPool, CCIPLocalSimulatorFork ccipLocalSimulatorFork)
+    {
+        // deploy CCIP local simulation contracts to get chain specific network details
+        ccipLocalSimulatorFork = new CCIPLocalSimulatorFork();
+        Register.NetworkDetails memory networkDetails = ccipLocalSimulatorFork.getNetworkDetails(block.chainid);
+        vm.startBroadcast(vm.envAddress("DEFAULT_KEY_ADDRESS"));
+        // deploy RBT Pool contract
+        rbtPool = new RebaseTokenPool(
+            IERC20(address(rbt)),
+            DECIMAL_PRECISION,
+            allowList,
+            networkDetails.rmnProxyAddress,
+            networkDetails.routerAddress
+        );
+        // grant MINT_AND_BURN role to RBT Pool contract
+        rbt.grantMintAndBurnRole(address(rbtPool));
+        // grant appropriate chainlink CCIP admin, permissions, and roles
+        RegistryModuleOwnerCustom(networkDetails.registryModuleOwnerCustomAddress).registerAdminViaOwner(address(rbt));
+        TokenAdminRegistry(networkDetails.tokenAdminRegistryAddress).acceptAdminRole(address(rbt));
+        TokenAdminRegistry(networkDetails.tokenAdminRegistryAddress).setPool(address(rbt), address(rbtPool));
+        vm.stopBroadcast();
+    }
+
+    // get address to deploy contracts from
+    function _getAccount() internal view returns (address) {
+        if (block.chainid == LOCAL_CHAIN_ID) {
+            return DEFAULT_SENDER;
+        } else {
+            return vm.envAddress("DEFAULT_KEY_ADDRESS");
+        }
+    }
+}
+
+contract DeployRBT2 is Script, CodeConstants {
+    address[] allowList; // blank address array for allowlist == anyone can use the bridge
+
+    function run(bool _deployVault)
+        external
+        returns (Vault vault, RebaseToken rbt, RebaseTokenPool rbtPool, CCIPLocalSimulatorFork ccipLocalSimulatorFork)
+    {
+        vm.startBroadcast(_getAccount());
+        // deploy RBT contract
+        rbt = new RebaseToken(RBT_NAME, RBT_SYMBOL, INITIAL_INTEREST_RATE);
+
+        if (_deployVault == true) {
+            // deploy vault contract if needed
+            vault = new Vault(rbt);
+            // grant MINT_AND_BURN role to vault contract
+            rbt.grantMintAndBurnRole(address(vault));
+        }
+        vm.stopBroadcast();
+
+        // only needed for fork tests and deployments, ignore for local anvil chain
+        if (block.chainid != LOCAL_CHAIN_ID) {
+            (rbtPool, ccipLocalSimulatorFork) = _deployPoolAndConfigureCCIP(rbt);
+        }
     }
 
     function _deployPoolAndConfigureCCIP(RebaseToken rbt)
