@@ -1,20 +1,15 @@
 # Current Deployments
 ## ETH sepolia (SOURCE)
-STILL NEED TO CONFIGURE POOL WITH SCRIPT
 vault: 0x12639d86f599921c1b54d502834a55b25AEC5D5e
 rbt: 0x98f2e36a043D6828F856a7008Aa5502c10974e51
 rbtPool: 0x7099bF52dBF2f9BDa10a5C7AAae3050886271a4d
 ## ARB sepolia (DESTINATION)
-STILL NEED TO CONFIGURE POOL WITH SCRIPT
 rbt: 0x3303128056E8B7459C403277AC88468992058941
 rbtPool: 0xE24BcCBFC48878ea59146E98cfef871d920891Fd
 
 # Notes
 TO-DO: 
-1. add interactions script to cross chain tests for coverage
-2. fix Makefile to reflect actual deployment flow
-3. Deploy to sepolia and arb testnets
-4. Fill out README outline and document deployment process
+Fill out README outline and document deployment process
 
 ## Foundry CCIP Rebase Token
 
