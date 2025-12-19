@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: all test clean deploy fund help install snapshot coverageReport format anvil
+.PHONY: all test clean deploy fund help install snapshot coverageReport format anvil configureSourcePool configureDestinationPool depositToVaultAndMintRbt bridgeTokensFromSource
 
 DEFAULT_ANVIL_KEY := 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
@@ -57,3 +57,18 @@ deploy:
 	@read -p "Deploy Vault contract also? (y/n): " RESPONSE; \
 	DEPLOY_FLAG=$$([ "$$RESPONSE" = "y" ] && echo "true" || echo "false"); \
 	forge script script/DeployRBT.s.sol:DeployRBT --sig "run(bool)" $$DEPLOY_FLAG $(NETWORK_ARGS)
+
+configureSourcePool:
+	forge script script/Interactions.s.sol:ConfigurePool --sig "run(address, uint64, address, address)" 0x7099bF52dBF2f9BDa10a5C7AAae3050886271a4d 3478487238524512106 0xE24BcCBFC48878ea59146E98cfef871d920891Fd 0x3303128056E8B7459C403277AC88468992058941 $(NETWORK_ARGS)
+
+configureDestinationPool:
+	forge script script/Interactions.s.sol:ConfigurePool --sig "run(address, uint64, address, address)" 0xE24BcCBFC48878ea59146E98cfef871d920891Fd 16015286601757825753 0x7099bF52dBF2f9BDa10a5C7AAae3050886271a4d 0x98f2e36a043D6828F856a7008Aa5502c10974e51 $(NETWORK_ARGS)
+
+depositToVaultAndMintRbt:
+	forge script script/Interactions.s.sol:DepositAndMintRbt --sig "run(address payable, uint256)" 0x12639d86f599921c1b54d502834a55b25AEC5D5e 1000000000000000 $(NETWORK_ARGS)
+
+bridgeTokensFromSource:
+	forge script script/Interactions.s.sol:BridgeTokens --sig "run(address, address, uint256, uint64, address, address, uint256)" 0x7Db545F2803A8Fe741522Dec7274Fa4142a337FA 0x98f2e36a043D6828F856a7008Aa5502c10974e51 1000000000000000 3478487238524512106 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59 0x779877A7B0D9E8603169DdbD7836e478b4624789 0 $(NETWORK_ARGS)
+
+# depositToVaultAndMintRbt:
+# 	forge cast send --value .001ether --account defaultKey 0x12639d86f599921c1b54d502834a55b25AEC5D5e "deposit()" --rpc-url $(ETH_SEPOLIA_RPC_URL) --broadcast
