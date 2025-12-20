@@ -62,32 +62,32 @@ This project implements a cross-chain rebase token (RBT) protocol that incentivi
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-│                              Users/EOAs                                             │
-└──────────────────────────────────────────────────────────┬───────────────────────┬──────────────────────────────────┘
-                   │                              │
-             deposit(ETH)                  redeem(RBT)
-                   │                              │
-                   ▼                              ▼
+│                              Users/EOAs                                                      │
+└──────────────────────────────────────────────────────────┬───────────────────────────────────┘
+                   │                                       │
+             deposit(ETH)                            redeem(RBT)
+                   │                                       │
+                   ▼                                       ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-│                             VAULT CONTRACT                                           │
-│  • Receives ETH deposits                                                            │
-│  • Calls mint() on RebaseToken                                                     │
-│  • Holds ETH reserves for redemptions                                              │
-└──────────────────────────────────────────────┬───────────────────────────────────────┬───────────────────────────────────┘
-                   │                              │
-            mint(user, amount)             burn(user, amount)
-                   │                              │
-                   ▼                              ▼
+│                             VAULT CONTRACT                                                   │
+│  • Receives ETH deposits                                                                     │
+│  • Calls mint() on RebaseToken                                                               │
+│  • Holds ETH reserves for redemptions                                                        │
+└──────────────────────────────────────────────┬───────────────────────────────────────────────┘
+                   │                           │
+            mint(user, amount)           burn(user, amount)
+                   │                           │
+                   ▼                           ▼
 ┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-│                        REBASE TOKEN CONTRACT                                         │
+│                        REBASE TOKEN CONTRACT                                                 │
 │  ┌────────────────────────────────────────────────────────────────────────────────┐          │
 │  │  • ERC20 Token with dynamic balanceOf()                                        │          │
 │  │  • Personal interest rates per user (locked at deposit)                        │          │
 │  │  • Global interest rate (owner controlled, decreases only)                     │          │
-│  │  • Access Control (MINT_AND_BURN_ROLE)                                        │          │
-│  │  • Interest accrual: balance * (1 + rate * timeElapsed)                       │          │
+│  │  • Access Control (MINT_AND_BURN_ROLE)                                         │          │
+│  │  • Interest accrual: balance * (1 + rate * timeElapsed)                        │          │
 │  └────────────────────────────────────────────────────────────────────────────────┘          │
-└──────────────────────────────────────────────┬────────────────────────────┬────────────────────────────────────┘
+└──────────────────┬──────────────────────────────┬────────────────────────────────────────────┘
                    │                              │
             burn() or transfer()            cross-chain bridge
                    │                              │
