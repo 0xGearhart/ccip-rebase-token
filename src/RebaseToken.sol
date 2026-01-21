@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity 0.8.33;
 
 import {IRebaseToken} from "./interfaces/IRebaseToken.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";

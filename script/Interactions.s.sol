@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity 0.8.33;
 
 import {Vault} from "../src/Vault.sol";
 import {CodeConstants} from "./DeployRBT.s.sol";

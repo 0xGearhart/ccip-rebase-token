@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.24;
+pragma solidity 0.8.33;
 
 import {CodeConstants, DeployRBT} from "../../script/DeployRBT.s.sol";
 import {RebaseToken} from "../../src/RebaseToken.sol";
