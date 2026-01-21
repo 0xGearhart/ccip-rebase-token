@@ -379,6 +379,12 @@ Generate coverage report:
 forge coverage
 ```
 
+Create test coverage report and save to .txt file:
+
+```bash
+make coverage-report
+```
+
 ### Deploy Locally
 
 Start a local Anvil node:
@@ -562,7 +568,7 @@ The protocol implements OpenZeppelin's `AccessControl` and `Ownable` for fine-gr
 Generate a detailed gas report for all functions:
 
 ```bash
-forge test --gas-report
+make gas-report
 ```
 
 Create a gas snapshot (baseline for comparison):
