@@ -1,10 +1,10 @@
-# Foundry CCIP Rebase Token
+# CCIP Rebase Token
 
 **⚠️ This project is not audited, use at your own risk**
 
 ## Table of Contents
 
-- [Foundry CCIP Rebase Token](#foundry-ccip-rebase-token)
+- [CCIP Rebase Token](#ccip-rebase-token)
   - [Table of Contents](#table-of-contents)
   - [About](#about)
     - [Key Features](#key-features)
@@ -110,7 +110,7 @@ This project implements a cross-chain rebase token (RBT) protocol that incentivi
 
 **Repository Structure:**
 ```
-foundry-ccip-rebase-token/
+ccip-rebase-token/
 ├── src/
 │   ├── RebaseToken.sol           # Core ERC20 with rebasing mechanics
 │   ├── RebaseTokenPool.sol       # Chainlink CCIP token pool for bridging
@@ -282,8 +282,8 @@ When you bridge RBT tokens to another chain:
 ### Quickstart
 
 ```bash
-git clone https://github.com/0xGearhart/foundry-ccip-rebase-token
-cd foundry-ccip-rebase-token
+git clone https://github.com/0xGearhart/ccip-rebase-token
+cd ccip-rebase-token
 make
 ```
 
