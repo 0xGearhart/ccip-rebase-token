@@ -53,7 +53,7 @@ This project implements a cross-chain rebase token (RBT) protocol that incentivi
 - **Vault Integration**: Secure ETH deposit mechanism with automatic RBT minting on deposit and burning on withdrawal
 
 **Tech Stack:**
-- Solidity ^0.8.24
+- Solidity 0.8.33
 - Foundry (Forge/Cast)
 - Chainlink CCIP (Cross-Chain Messaging Protocol)
 - OpenZeppelin Contracts (ERC20, AccessControl, Ownable)
