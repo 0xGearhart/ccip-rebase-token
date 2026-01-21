@@ -194,13 +194,13 @@ balanceOf(user) = 1.0 RBT (principal × multiplier where multiplier = 1 initiall
 
 Now let's see how interest grows after the initial deposit of 1 ETH at rate 5e10 (wei per second):
 
-| Time Elapsed | Multiplier Calculation | Multiplier | RBT Balance |
-|--------------|------------------------|------------|------------|
-| 0 seconds | `(1e18 + 5e10 × 0) / 1e18` | `1.000000` | **1.000000** RBT |
-| 1 day (86,400s) | `(1e18 + 5e10 × 86400) / 1e18` | `1.00432` | **1.00432** RBT |
-| 7 days (604,800s) | `(1e18 + 5e10 × 604800) / 1e18` | `1.03024` | **1.03024** RBT |
-| 30 days (2,592,000s) | `(1e18 + 5e10 × 2592000) / 1e18` | `1.1296` | **1.1296** RBT |
-| 365 days (31,536,000s) | `(1e18 + 5e10 × 31536000) / 1e18` | `2.5768` | **2.5768** RBT |
+| Time Elapsed           | Multiplier Calculation            | Multiplier | RBT Balance      |
+| ---------------------- | --------------------------------- | ---------- | ---------------- |
+| 0 seconds              | `(1e18 + 5e10 × 0) / 1e18`        | `1.000000` | **1.000000** RBT |
+| 1 day (86,400s)        | `(1e18 + 5e10 × 86400) / 1e18`    | `1.00432`  | **1.00432** RBT  |
+| 7 days (604,800s)      | `(1e18 + 5e10 × 604800) / 1e18`   | `1.03024`  | **1.03024** RBT  |
+| 30 days (2,592,000s)   | `(1e18 + 5e10 × 2592000) / 1e18`  | `1.1296`   | **1.1296** RBT   |
+| 365 days (31,536,000s) | `(1e18 + 5e10 × 31536000) / 1e18` | `2.5768`   | **2.5768** RBT   |
 
 **Interpretation:**
 - After 1 day: You've earned 0.00432 RBT in interest (~0.432% daily gain)
@@ -284,8 +284,7 @@ When you bridge RBT tokens to another chain:
 ```bash
 git clone https://github.com/0xGearhart/foundry-ccip-rebase-token
 cd foundry-ccip-rebase-token
-make install
-forge build
+make
 ```
 
 ### Environment Setup
@@ -484,13 +483,13 @@ forge verify-contract <CONTRACT_ADDRESS> src/RebaseToken.sol:RebaseToken --chain
 
 ### Deployment Addresses
 
-| Network | Contract | Address | Explorer |
-|---------|----------|---------|----------|
-| Sepolia | Vault | `0x12639d86f599921c1b54d502834a55b25AEC5D5e` | [View](https://sepolia.etherscan.io/address/0x12639d86f599921c1b54d502834a55b25AEC5D5e) |
-| Sepolia | Rebase Token (RBT) | `0x98f2e36a043D6828F856a7008Aa5502c10974e51` | [View](https://sepolia.etherscan.io/address/0x98f2e36a043D6828F856a7008Aa5502c10974e51) |
-| Sepolia | RBT Token Pool | `0x7099bF52dBF2f9BDa10a5C7AAae3050886271a4d` | [View](https://sepolia.etherscan.io/address/0x7099bF52dBF2f9BDa10a5C7AAae3050886271a4d) |
-| Arbitrum Sepolia | Rebase Token (RBT) | `0x3303128056E8B7459C403277AC88468992058941` | [View](https://sepolia.arbiscan.io/address/0x3303128056E8B7459C403277AC88468992058941) |
-| Arbitrum Sepolia | RBT Token Pool | `0xE24BcCBFC48878ea59146E98cfef871d920891Fd` | [View](https://sepolia.arbiscan.io/address/0xE24BcCBFC48878ea59146E98cfef871d920891Fd) |
+| Network          | Contract           | Address                                      | Explorer                                                                                |
+| ---------------- | ------------------ | -------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Sepolia          | Vault              | `0x12639d86f599921c1b54d502834a55b25AEC5D5e` | [View](https://sepolia.etherscan.io/address/0x12639d86f599921c1b54d502834a55b25AEC5D5e) |
+| Sepolia          | Rebase Token (RBT) | `0x98f2e36a043D6828F856a7008Aa5502c10974e51` | [View](https://sepolia.etherscan.io/address/0x98f2e36a043D6828F856a7008Aa5502c10974e51) |
+| Sepolia          | RBT Token Pool     | `0x7099bF52dBF2f9BDa10a5C7AAae3050886271a4d` | [View](https://sepolia.etherscan.io/address/0x7099bF52dBF2f9BDa10a5C7AAae3050886271a4d) |
+| Arbitrum Sepolia | Rebase Token (RBT) | `0x3303128056E8B7459C403277AC88468992058941` | [View](https://sepolia.arbiscan.io/address/0x3303128056E8B7459C403277AC88468992058941)  |
+| Arbitrum Sepolia | RBT Token Pool     | `0xE24BcCBFC48878ea59146E98cfef871d920891Fd` | [View](https://sepolia.arbiscan.io/address/0xE24BcCBFC48878ea59146E98cfef871d920891Fd)  |
 
 **Mainnet Deployment Status:** Not yet deployed to mainnet. Use testnet addresses for testing.
 
